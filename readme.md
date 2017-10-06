@@ -53,6 +53,9 @@ $ pip install -r requirements.txt
 ```
 
 
+## Compiling sass to css
+
+We removed Compass from dependencies, SASS file in sass -folder can be compiled to css with `sass main.sass ../static/css/main.css`
 
 ## Starting servers 
 

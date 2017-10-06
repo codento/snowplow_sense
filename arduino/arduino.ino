@@ -1,27 +1,28 @@
 
 
-volatile byte rotation;
+volatile byte elevation;
 // volatile = kun jossakin on muuttuva arvo
 // byte = tallennetaan 8-bittinen numero 0 – 255
-unsigned int rpm;
+unsigned int point;
 // positiivinen luku rpm
 unsigned long time;
 // tarvitaan matemaattisissa komennoissa
 
-void rpm_calc() // annetaan rotaatiolle +1
+void lift() // annetaan rotaatiolle +1
 {
-  rotation++;
+  if
+  elevation++;
 }
 
 void setup()
 {
   Serial.begin(9600);
-  attachInterrupt(0, rpm_calc, FALLING);
+  attachInterrupt(0, lift, FALLING);
   /* komentoa käytetään kun halutaan tietää loppuuko pin 2 tuleva virta
   * pyörässä reikä joka hyödyttää kierrosten laskemisessa.
   */
-  rotation = 0;
-  rpm = 0;
+  elevation = 0;
+  point = 0;
   time = 0;
 }
 
@@ -29,13 +30,13 @@ void loop()
 {
   delay(1000);
   detachInterrupt(0);
-  rpm = 30 * 1000 / (millis() - time) * rotation;
+  point = elevation;
   time = millis();
-  rotation = 0;
+  elevation = 0;
 
   //Print out result to lcd
-  Serial.print("RPM =");
-  Serial.println(rpm);
+  Serial.print("p");
+  Serial.println(point);
 
   // käynnistetään keskeytys komento uudestaan.
   attachInterrupt(0, rpm_calc, FALLING);

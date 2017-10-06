@@ -5,6 +5,7 @@ We'll modify this to fetch data at <1s intervals. -Jukka
 */
 
 const snowAPI = '/data/94694.json' // not real input data, this is just dummy.
+const fakeAPI = 'api/'
 
 var activePolylines = []
 var map = null
@@ -26,14 +27,32 @@ function initializeGoogleMaps(callback, hours) {
   const styles = [{
     stylers: [
       { invert_lightness: true },
-      { hue: '#00bbff' },
-      { weight: 0.4 },
-      { saturation: 80 }
+      { hue: '#ffcc00' },
+      { weight: 0.3 },
+      { saturation: 60 }
     ]
+  }, {
+    elementType: 'labels.text.stroke',
+    stylers: [
+        { color: '#242f3e' }
+    ]
+  }, {
+    elementType: 'labels.text.fill',
+    stylers: [
+        { color: '#a98a2b' }
+    ]
+  }, {
+    featureType: 'road',
+    elementType: 'geometry',
+    stylers: [{color: '#f1aa47'}]
+  }, {
+    featureType: 'road.local',
+    elementType: 'geometry',
+    stylers: [{color: '#f1aa47'}]
   }, {
     featureType: 'road.arterial',
     stylers: [
-      { color: '#00bbff' },
+      { color: '#f1aa47' },
       { weight: 0.1 }
     ]
   }, {
@@ -44,7 +63,7 @@ function initializeGoogleMaps(callback, hours) {
     elementType: 'labels.text.fill',
     stylers: [
       { visibility: 'on' },
-      { color: '#2b8aa9' }
+      { color: '#f98a2b' }
     ]
   }, {
     featureType: 'administrative.locality',
@@ -185,24 +204,3 @@ $(document).ready(function() {
     $('#visualization').toggleClass('on')
   })
 })
-
-
-
-console.log(`\
-.................................................................................\n \
-.                                                                               .\n \
-.      _________                            .__                                 .\n \
-.     /   _____/ ____   ______  _  ________ |  |   ______  _  ________          .\n \
-.     \\_____  \\ /    \\ /  _ \\ \\/ \\/ /\\____ \\|  |  /  _ \\ \\/ \\/ /  ___/          .\n \
-.     /        \\   |  (  <_> )     / |  |_> >  |_(  <_> )     /\\___ \\           .\n \
-.    /_______  /___|  /\\____/ \\/\\_/  |   __/|____/\\____/ \\/\\_//____  >          .\n \
-.            \\/     \\/ .__           |__|     .__  .__             \\/   .___    .\n \
-.                ___  _|__| ________ _______  |  | |__|_______ ____   __| _/    .\n \
-.        Sampsa  \\  \\/ /  |/  ___/  |  \\__  \\ |  | |  \\___   // __ \\ / __ |     .\n \
-.        Kuronen  \\   /|  |\\___ \\|  |  // __ \\|  |_|  |/    /\\  ___// /_/ |     .\n \
-.            2014  \\_/ |__/____  >____/(____  /____/__/_____ \\\\___  >____ |     .\n \
-.                              \\/           \\/              \\/    \\/     \\/     .\n \
-.                  https://github.com/sampsakuronen/snowplow-visualization      .\n \
-.                                                                               .\n \
-.................................................................................\n`)
-console.log('It is nice to see that you want to know how something is made. We are looking for guys like you: http://reaktor.fi/careers/')
