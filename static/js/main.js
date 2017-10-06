@@ -6,8 +6,10 @@ We'll modify this to fetch data at <1s intervals. -Jukka
 
 // const snowAPI = '/data/94694.json' // not real input data, this is just dummy.
 const snowAPI = 'api'
+const nextActionAPI = 'api/recent'
 
 var activePolylines = []
+var activeMarkers = []
 var map = null
 
 function initializeGoogleMaps(callback, hours) {
@@ -91,19 +93,32 @@ function getPlowJobColor(job) {
     case 'hi': return '#ffffff'
     case 'hn': return '#00a59b'
     case 'hs': return '#910202'
-    case 'ps': return '#970899'
+    case 'ps': return '#97aaff'
     case 'pe': return '#132bbe'
     default: return '#6c00ff'
   }
 }
 
+function pinSymbol(color) {
+    return {
+        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+        fillColor: color,
+        fillOpacity: 1,
+        strokeColor: '#000',
+        strokeWeight: 2,
+        scale: 1,
+   };
+}
+
+
 function addMapLine(plowData, plowJobId) {
   const plowTrailColor = getPlowJobColor(plowJobId)
-  console.log(plowData, plowJobId);
+  let latLng = null;
   const polylinePath = _.reduce(
     plowData,
     function(accu, x) {
-      accu.push(new google.maps.LatLng(x.coords[1], x.coords[0]))
+      latLng = new google.maps.LatLng(x.coords[1], x.coords[0]);
+      accu.push(latLng)
       return accu
     },
     [])
@@ -111,13 +126,55 @@ function addMapLine(plowData, plowJobId) {
     path: polylinePath,
     geodesic: true,
     strokeColor: plowTrailColor,
-    strokeWeight: 3,
-    strokeOpacity: 0.8
+    strokeWeight: 2,
+    strokeOpacity: 0.6
   })
-  console.log(polyline);
   activePolylines.push(polyline)
   polyline.setMap(map)
+  const marker = new google.maps.Marker({
+          position: latLng,
+          title: '#' + plowJobId,
+          icon: pinSymbol("#FFF"),
+          map: map
+        });
+  activeMarkers.push(marker);
 }
+
+
+function createNewPolyline(latLng, color, weight) {
+    const myPolyline = new google.maps.Polyline({
+      path: [latLng],
+      geodesic: true,
+      strokeColor: color,
+      strokeWeight: weight,
+      strokeOpacity: 0.8
+    });
+    activePolylines.push(myPolyline);
+    myPolyline.setMap(map);
+}
+
+
+function addToExistingMapLine(plowData) {
+  const latLng = new google.maps.LatLng(plowData.coords[1], plowData.coords[0]);
+  const eventType = (Math.random() > 0.2) ? plowData.events[0] : 'ps';
+  const plowTrailWeight = (eventType === 'ps') ? 1 : 4;
+  const plowTrailColor = getPlowJobColor(eventType);
+  myPolyline = activePolylines[activePolylines.length - 1]
+  if (activePolylines.length == 1) {
+    createNewPolyline(latLng, plowTrailColor, plowTrailWeight);
+  } else if (myPolyline.strokeColor !== plowTrailColor) {
+    createNewPolyline(latLng, plowTrailColor, plowTrailWeight);
+    const myMarker = activeMarkers[0];
+    myMarker.setIcon(pinSymbol(plowTrailColor));
+  } else {
+    const myMarker = activeMarkers[0];
+    myMarker.setIcon(pinSymbol(plowTrailColor));
+    const path = myPolyline.getPath();
+    myMarker.setPosition(latLng);
+    path.push(latLng);
+  }
+}
+
 
 function clearMap() {
   _.each(activePolylines, polyline=> polyline.setMap(null))
@@ -132,13 +189,27 @@ function displayNotification(notificationText) {
     .slideUp(800)
 }
 
+function getNextAction() {
+  $.getJSON(nextActionAPI)
+    .done(function(json) {
+      if (json.length !== 0) {
+          addToExistingMapLine(json);
+      }
+    })
+    .fail(error=> console.error(`Failed to fetch active snowplows: ${JSON.stringify(error)}`))
+}
+
+function startTimedCalls() {
+  setInterval(getNextAction, 100);
+}
+
 function getActivePlows(callback) {
   $('#load-spinner').fadeIn(400)
   $.getJSON(snowAPI)
     .done(function(json) {
       if (json.length !== 0) {
-        console.log(json);
-        callback(json.location_history)
+        callback(json.location_history);
+        startTimedCalls();
       } else {
         displayNotification('Ei näytettävää valitulla ajalla')
       }
