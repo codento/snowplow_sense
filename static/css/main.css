@@ -21,7 +21,7 @@ h2 {
   margin-top: 0; }
 
 a {
-  color: #00bbff;
+  color: #ffbb00;
   text-decoration: none;
   -webkit-transition: color 0.5s ease-in-out;
   -moz-transition: color 0.5s ease-in-out;
@@ -29,9 +29,9 @@ a {
   -o-transition: color 0.5s ease-in-out;
   transition: color 0.5s ease-in-out; }
   a:hover {
-    color: #66d7ff; }
+    color: #ffd766; }
   a:active {
-    color: #005675; }
+    color: #755600; }
 
 #info #info-button, #info .expanded {
   position: fixed;
@@ -164,7 +164,7 @@ a {
     color: #fff;
     padding: 5px 10px;
     background-color: #000;
-    border: 1px solid #00bbff;
+    border: 1px solid #ffbb00;
     margin-bottom: 0.5em;
     -webkit-transition: all 0.5s ease-in-out;
     -moz-transition: all 0.5s ease-in-out;
@@ -176,8 +176,8 @@ a {
     -ms-border-radius: 5px;
     border-radius: 5px; }
     #visualization #time-filters li.active, #visualization #time-filters li:hover {
-      border: 1px solid #00bbff;
-      background-color: #00bbff;
+      border: 1px solid #ffbb00;
+      background-color: #ffbb00;
       color: #fff; }
   #visualization #time-filters #time-range {
     width: 100%; }
