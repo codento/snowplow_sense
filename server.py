@@ -13,7 +13,7 @@ app = Flask(__name__, static_folder='static', static_url_path='')
 with open('data/94694.json') as json_text:
     input_data = json.load(json_text)['location_history']
 
-start_index = 300
+start_index = 2000
 global current_index
 
 @app.route("/")

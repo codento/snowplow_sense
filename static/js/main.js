@@ -86,7 +86,7 @@ function initializeGoogleMaps(callback, hours) {
 function getPlowJobColor(job) {
   switch (job) {
     case 'kv': return '#84ff00'
-    case 'au': return '#f2c12e'
+    case 'au': return '#f2412e'
     case 'su': return '#d93425'
     case 'hi': return '#ffffff'
     case 'hn': return '#00a59b'
@@ -111,8 +111,8 @@ function addMapLine(plowData, plowJobId) {
     path: polylinePath,
     geodesic: true,
     strokeColor: plowTrailColor,
-    strokeWeight: 1.5,
-    strokeOpacity: 0.6
+    strokeWeight: 3,
+    strokeOpacity: 0.8
   })
   console.log(polyline);
   activePolylines.push(polyline)
