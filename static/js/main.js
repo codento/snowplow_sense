@@ -4,7 +4,7 @@ Currently this is all copied from Sampsa Kuronen's Snowplow map. See message at 
 We'll modify this to fetch data at <1s intervals. -Jukka
 */
 
-const snowAPI = 'https://dev.hel.fi/aura/v1/snowplow/'
+const snowAPI = '/data/94694.json' // not real input data, this is just dummy.
 
 var activePolylines = []
 var map = null
@@ -114,7 +114,7 @@ function displayNotification(notificationText) {
 
 function getActivePlows(hours, callback) {
   $('#load-spinner').fadeIn(400)
-  $.getJSON(`${snowAPI}?since=${hours}&location_history=1`)
+  $.getJSON(`${snowAPI}`)
     .done(function(json) {
       if (json.length !== 0) {
         callback(hours, json)
@@ -128,7 +128,7 @@ function getActivePlows(hours, callback) {
 
 function createIndividualPlowTrail(hours, plowId, historyData) {
   $('#load-spinner').fadeIn(800)
-  $.getJSON(`${snowAPI}${plowId}?since=${hours}&temporal_resolution=4`)
+  $.getJSON(`${snowAPI}`)
     .done(function(json) {
       if (json.length !== 0) {
         _.map(json, function(oneJobOfThisPlow) {
