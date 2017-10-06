@@ -1,0 +1,10 @@
+
+venv/
+node_modules/
+fetched/
+.DS_Store
+.idea/
+*.ipynb
+*.params
+__pycache__/
+data/

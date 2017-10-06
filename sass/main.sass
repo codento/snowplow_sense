@@ -1,0 +1,331 @@
+@import "compass"
+@import "compass/reset"
+
+html, body, #map-canvas
+  height: 100%
+  width: 100%
+  font-family: "Exo 2", Helvetica, Arial, sans-serif
+  -webkit-font-smoothing: antialiased
+
+h1
+  font-weight: bold
+  margin-bottom: 1em
+  font-size: 1.2em
+
+h2
+  font-weight: bold
+  margin-top: 1em
+  padding-bottom: 0.5em
+  margin-bottom: 0.5em
+  border-bottom: 1px solid #333
+.no-top-margin
+  margin-top: 0
+
+a
+  color: #00bbff
+  text-decoration: none
+  +transition(color 0.5s ease-in-out)
+  &:hover
+    color: #66d7ff
+  &:active
+    color: #005675
+
+#info
+  #info-button, .expanded
+    position: fixed
+    top: 1%
+    left: 0
+    min-height: 40px
+    background: #000
+    color: #fff
+    font-size: 16px
+    line-height: 40px
+    +border-radius(0 10px 10px 0)
+    +box-shadow(0 0 1em rgba(255,255,255, 0.1))
+  #info-button
+    cursor: pointer
+    width: 70px
+    z-index: 290
+    font-size: 18px
+    text-align: center
+  #info-close
+    position: absolute
+    top: 0
+    right: 0
+    background: inherit
+    color: inherit
+    border: 0
+    outline: none
+    font-size: 14px
+    padding: 1em
+    font-family: inherit
+    cursor: pointer
+  .expanded
+    z-index: 300
+    width: 100%
+    max-width: 300px
+    padding: 0 40px
+    line-height: 20px
+    +translate(0, 0)
+    +transition(all 1s ease-in-out)
+    .info-container
+      display: inline-block
+      padding: 40px 0
+    p
+      padding-bottom: 1em
+      &:last-child
+        padding-bottom: 0
+  .copyright
+    margin-top: 0.75em
+  &.off
+    .expanded
+      +translate(-500px, 0)
+
+#visualization-button, #visualization
+  position: fixed
+  top: 1%
+  right: 0
+  width: 100%
+  background: #000
+  color: #fff
+  +border-radius(10px 0 0 10px)
+  +box-shadow(0 0 1em rgba(255,255,255, 0.1))
+
+#visualization-button
+  z-index: 290
+  max-width: 50px
+  line-height: 40px
+  text-align: center
+  font-size: 30px
+  cursor: pointer
+
+#visualization
+  z-index: 300
+  max-width: 275px
+  padding: 30px
+  +transition(all 1s ease-in-out)
+  .legend
+    list-style: none
+    li
+      line-height: 1.2em
+      &:before
+        content: "■"
+        padding-right: 0.3em
+        font-size: 1.5em
+        +opacity(0.9)
+    .kv:before
+      color: #84ff00
+    .au:before
+      color: #f2c12e
+    .su:before
+      color: #d93425
+    .hi:before
+      color: #ffffff
+    .hn:before
+      color: #00a59b
+    .hs:before
+      color: #910202
+    .ps:before
+      color: #970899
+    .pe:before
+      color: #132bbe
+    .other:before
+      color: #6c00ff
+    [data-selected="false"]
+      +opacity(0.5)
+  #time-filters
+    li
+      display: inline-block
+      margin-right: 0.25em
+      cursor: pointer
+      text-align: center
+      color: #fff
+      padding: 5px 10px
+      background-color: #000
+      border: 1px solid #00bbff
+      margin-bottom: 0.5em
+      +transition(all 0.5s ease-in-out)
+      +border-radius(5px)
+      &.active, &:hover
+        border: 1px solid #00bbff
+        background-color: #00bbff
+        color: #fff
+    #time-range
+      width: 100%
+    #time-range-current
+      display: block
+      text-align: center
+  #visualization-close
+    display: none
+    position: absolute
+    top: 0
+    right: 0
+    background: inherit
+    color: inherit
+    border: 0
+    outline: none
+    font-size: 14px
+    padding: 1em
+    font-family: inherit
+    cursor: pointer
+
+#notification
+  display: none
+  background: #f2c12e
+  color: #000
+  padding: 10px 20px
+  margin-bottom: 1em
+  +border-radius(5px)
+
+#facebook-like
+  position: fixed
+  bottom: 33px
+  left: 6px
+
+@media screen and (max-width: 769px)
+  [data-hours="168"]
+    display: none !important
+
+@media screen and (max-width: 500px)
+  #info
+    .expanded
+      padding-left: 10px
+      padding-right: 10px
+
+  #visualization
+    +translate(500px, 0)
+    &.on
+      +translate(0, 0)
+    #visualization-close
+      display: block
+
+
+// Load spinner animation from http://cssload.net/
+#load-spinner
+  display: none
+  z-index: 2000
+  width: 218px
+  height: 17px
+  background: #000
+  padding: 45px 20px
+  position: absolute
+  z-index: 3000
+  +border-radius(5px)
+
+.followingBallsG
+  position: absolute
+  background-color: #fff
+  width: 17px
+  height: 17px
+  -moz-border-radius: 9px
+  -moz-animation-name: bounce_followingBallsG
+  -moz-animation-duration: 2.7s
+  -moz-animation-iteration-count: infinite
+  -moz-animation-direction: linear
+  -webkit-border-radius: 9px
+  -webkit-animation-name: bounce_followingBallsG
+  -webkit-animation-duration: 2.7s
+  -webkit-animation-iteration-count: infinite
+  -webkit-animation-direction: linear
+  -ms-border-radius: 9px
+  -ms-animation-name: bounce_followingBallsG
+  -ms-animation-duration: 2.7s
+  -ms-animation-iteration-count: infinite
+  -ms-animation-direction: linear
+  -o-border-radius: 9px
+  -o-animation-name: bounce_followingBallsG
+  -o-animation-duration: 2.7s
+  -o-animation-iteration-count: infinite
+  -o-animation-direction: linear
+  border-radius: 9px
+  animation-name: bounce_followingBallsG
+  animation-duration: 2.7s
+  animation-iteration-count: infinite
+  animation-direction: linear
+
+#followingBallsG_1
+  -moz-animation-delay: 0s
+  -webkit-animation-delay: 0s
+  -ms-animation-delay: 0s
+  -o-animation-delay: 0s
+  animation-delay: 0s
+
+#followingBallsG_2
+  -moz-animation-delay: 0.27s
+  -webkit-animation-delay: 0.27s
+  -ms-animation-delay: 0.27s
+  -o-animation-delay: 0.27s
+  animation-delay: 0.27s
+
+#followingBallsG_3
+  -moz-animation-delay: 0.54s
+  -webkit-animation-delay: 0.54s
+  -ms-animation-delay: 0.54s
+  -o-animation-delay: 0.54s
+  animation-delay: 0.54s
+
+#followingBallsG_4
+  -moz-animation-delay: 0.81s
+  -webkit-animation-delay: 0.81s
+  -ms-animation-delay: 0.81s
+  -o-animation-delay: 0.81s
+  animation-delay: 0.81s
+
+@-moz-keyframes bounce_followingBallsG
+  0%
+    left: 0px
+    background-color: #fff
+  50%
+    left: 221px
+    background-color: #fff
+  100%
+    left: 0px
+    background-color: #fff
+
+
+@-webkit-keyframes bounce_followingBallsG
+  0%
+    left: 0px
+    background-color: #fff
+  50%
+    left: 221px
+    background-color: #fff
+  100%
+    left: 0px
+    background-color: #fff
+
+
+@-ms-keyframes bounce_followingBallsG
+  0%
+    left: 0px
+    background-color: #fff
+  50%
+    left: 221px
+    background-color: #fff
+  100%
+    left: 0px
+    background-color: #fff
+
+
+@-o-keyframes bounce_followingBallsG
+  0%
+    left: 0px
+    background-color: #fff
+  50%
+    left: 221px
+    background-color: #fff
+  100%
+    left: 0px
+    background-color: #fff
+
+
+@keyframes bounce_followingBallsG
+  0%
+    left: 0px
+    background-color: #fff
+  50%
+    left: 221px
+    background-color: #fff
+  100%
+    left: 0px
+    background-color: #fff
