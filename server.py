@@ -17,11 +17,9 @@ with open('data/94694.json') as json_text:
 def index():
     return app.send_static_file('index.html')
 
-@app.route("/")
-def emulate_motion(input_data):
-    for elem in input_data['location_history']:
-        time.sleep(1)
-        print(elem['timestamp'])
+@app.route("/still")
+def still():
+    return app.send_static_file('still_route.html')
 
 @app.route("/api")
 def api_root():
@@ -32,6 +30,5 @@ def api_root():
 
 
 if __name__ == "__main__":
-    emulate_motion(input_data)
     app.run(port=8000)
     
