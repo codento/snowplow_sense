@@ -134,7 +134,7 @@ function addMapLine(plowData, plowJobId) {
   const marker = new google.maps.Marker({
           position: latLng,
           title: '#' + plowJobId,
-          icon: pinSymbol("#FFF"),
+          icon: pinSymbol(plowTrailColor),
           map: map
         });
   activeMarkers.push(marker);
@@ -163,12 +163,16 @@ function addToExistingMapLine(plowData) {
   if (activePolylines.length == 1) {
     createNewPolyline(latLng, plowTrailColor, plowTrailWeight);
   } else if (myPolyline.strokeColor !== plowTrailColor) {
+    // continue previous polyline until this point
+    const path = myPolyline.getPath();
+    path.push(latLng);
+    // then start a new one
     createNewPolyline(latLng, plowTrailColor, plowTrailWeight);
     const myMarker = activeMarkers[0];
+    myMarker.setPosition(latLng);
     myMarker.setIcon(pinSymbol(plowTrailColor));
   } else {
     const myMarker = activeMarkers[0];
-    myMarker.setIcon(pinSymbol(plowTrailColor));
     const path = myPolyline.getPath();
     myMarker.setPosition(latLng);
     path.push(latLng);
