@@ -7,4 +7,3 @@ fetched/
 *.ipynb
 *.params
 __pycache__/
-data/
