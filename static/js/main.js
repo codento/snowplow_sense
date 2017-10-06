@@ -11,7 +11,7 @@ var activePolylines = []
 var map = null
 
 function initializeGoogleMaps(callback, hours) {
-  const helsinkiCenter = new google.maps.LatLng(60.193084, 24.940338)
+  const helsinkiCenter = new google.maps.LatLng(60.224009, 25.143760)
 
   const mapOptions = {
     center: helsinkiCenter,
