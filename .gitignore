@@ -7,3 +7,4 @@ fetched/
 *.ipynb
 *.params
 __pycache__/
+*.sass-cache/
