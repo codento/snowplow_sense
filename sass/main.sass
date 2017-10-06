@@ -1,6 +1,31 @@
-@import "compass"
-@import "compass/reset"
 
+=transition($args...)
+  -webkit-transition: $args
+  -moz-transition: $args
+  -ms-transition: $args
+  -o-transition: $args
+  transition: $args
+
+=border-radius($radius)
+  -webkit-border-radius: $radius
+  -moz-border-radius: $radius
+  -ms-border-radius: $radius
+  border-radius: $radius
+
+=box-shadow($left, $top, $blur, $spread, $color, $inset: false)
+  @if $inset
+    -webkit-box-shadow:inset $top $left $blur $color
+    -moz-box-shadow:inset $top $left $blur $color
+    box-shadow:inset $top $left $blur $color
+  @else
+    -webkit-box-shadow: $top $left $blur $color
+    -moz-box-shadow: $top $left $blur $color
+    box-shadow: $top $left $blur $color
+
+=translate($left, $top)
+  -ms-transform: translate($left, $top)
+  -webkit-transform: translate($left, $top)
+  transform: translate($left, $top)
 
 html, body, #map-canvas
   height: 100%
@@ -42,7 +67,7 @@ a
     font-size: 16px
     line-height: 40px
     +border-radius(0 10px 10px 0)
-    +box-shadow(0 0 1em rgba(255,255,255, 0.1))
+    @include box-shadow(0, 0, 1em, 0, rgba(255,255,255, 0.1))
   #info-button
     cursor: pointer
     width: 70px
@@ -90,7 +115,7 @@ a
   background: #000
   color: #fff
   +border-radius(10px 0 0 10px)
-  +box-shadow(0 0 1em rgba(255,255,255, 0.1))
+  @include box-shadow(0, 0, 1em, 0, rgba(255,255,255, 0.1))
 
 #visualization-button
   z-index: 290
@@ -113,7 +138,7 @@ a
         content: "■"
         padding-right: 0.3em
         font-size: 1.5em
-        +opacity(0.9)
+        opacity: 0.9
     .kv:before
       color: #84ff00
     .au:before
@@ -133,7 +158,7 @@ a
     .other:before
       color: #6c00ff
     [data-selected="false"]
-      +opacity(0.5)
+      opacity: 0.5
   #time-filters
     li
       display: inline-block

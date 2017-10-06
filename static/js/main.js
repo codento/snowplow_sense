@@ -5,6 +5,7 @@ We'll modify this to fetch data at <1s intervals. -Jukka
 */
 
 const snowAPI = 'https://dev.hel.fi/aura/v1/snowplow/'
+const fakeAPI = 'api/'
 
 var activePolylines = []
 var map = null
@@ -26,14 +27,14 @@ function initializeGoogleMaps(callback, hours) {
   const styles = [{
     stylers: [
       { invert_lightness: true },
-      { hue: '#00bbff' },
+      { hue: '#ffbb00' },
       { weight: 0.4 },
       { saturation: 80 }
     ]
   }, {
     featureType: 'road.arterial',
     stylers: [
-      { color: '#00bbff' },
+      { color: '#ffbb00' },
       { weight: 0.1 }
     ]
   }, {
@@ -44,7 +45,7 @@ function initializeGoogleMaps(callback, hours) {
     elementType: 'labels.text.fill',
     stylers: [
       { visibility: 'on' },
-      { color: '#2b8aa9' }
+      { color: '#a98a2b' }
     ]
   }, {
     featureType: 'administrative.locality',
