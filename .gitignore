@@ -8,3 +8,4 @@ fetched/
 *.params
 __pycache__/
 *.sass-cache/
+arduino/plow_data.log
