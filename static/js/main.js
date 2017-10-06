@@ -4,8 +4,8 @@ Currently this is all copied from Sampsa Kuronen's Snowplow map. See message at 
 We'll modify this to fetch data at <1s intervals. -Jukka
 */
 
-const snowAPI = '/data/94694.json' // not real input data, this is just dummy.
-const fakeAPI = 'api/'
+// const snowAPI = '/data/94694.json' // not real input data, this is just dummy.
+const snowAPI = 'api'
 
 var activePolylines = []
 var map = null
@@ -28,7 +28,8 @@ function initializeGoogleMaps(callback, hours) {
     stylers: [
       { invert_lightness: true },
       { hue: '#ffcc00' },
-      { weight: 0.3 },
+      { lightness: 10 },
+      { gamma: 1.0 },
       { saturation: 60 }
     ]
   }, {
@@ -98,6 +99,7 @@ function getPlowJobColor(job) {
 
 function addMapLine(plowData, plowJobId) {
   const plowTrailColor = getPlowJobColor(plowJobId)
+  console.log(plowData, plowJobId);
   const polylinePath = _.reduce(
     plowData,
     function(accu, x) {
@@ -105,7 +107,6 @@ function addMapLine(plowData, plowJobId) {
       return accu
     },
     [])
-
   const polyline = new google.maps.Polyline({
     path: polylinePath,
     geodesic: true,
@@ -113,7 +114,7 @@ function addMapLine(plowData, plowJobId) {
     strokeWeight: 1.5,
     strokeOpacity: 0.6
   })
-
+  console.log(polyline);
   activePolylines.push(polyline)
   polyline.setMap(map)
 }
@@ -131,12 +132,13 @@ function displayNotification(notificationText) {
     .slideUp(800)
 }
 
-function getActivePlows(hours, callback) {
+function getActivePlows(callback) {
   $('#load-spinner').fadeIn(400)
-  $.getJSON(`${snowAPI}`)
+  $.getJSON(snowAPI)
     .done(function(json) {
       if (json.length !== 0) {
-        callback(hours, json)
+        console.log(json);
+        callback(json.location_history)
       } else {
         displayNotification('Ei näytettävää valitulla ajalla')
       }
@@ -145,54 +147,22 @@ function getActivePlows(hours, callback) {
     .fail(error=> console.error(`Failed to fetch active snowplows: ${JSON.stringify(error)}`))
 }
 
-function createIndividualPlowTrail(hours, plowId, historyData) {
-  $('#load-spinner').fadeIn(800)
-  $.getJSON(`${snowAPI}`)
-    .done(function(json) {
-      if (json.length !== 0) {
-        _.map(json, function(oneJobOfThisPlow) {
-          const plowHasLastGoodEvent = (oneJobOfThisPlow != null) && (oneJobOfThisPlow[0] != null) && (oneJobOfThisPlow[0].events != null) && (oneJobOfThisPlow[0].events[0] != null)
-          if (plowHasLastGoodEvent) {
-            addMapLine(oneJobOfThisPlow, oneJobOfThisPlow[0].events[0])
-          }
-      })
-        $('#load-spinner').fadeOut(800)
-      }
-    })
-    .fail(error=> console.error(`Failed to create snowplow trail for plow ${plowId}: ${JSON.stringify(error)}`))
-}
-
-function createPlowsOnMap(hours, json) {
-  _.each(json, x=> createIndividualPlowTrail(hours, x.id, json))
-}
-
 
 function populateMap(hours) {
-  clearMap()
-  getActivePlows(`${hours}hours+ago`, (hours, json)=> createPlowsOnMap(hours, json))
+  clearMap();
+  getActivePlows(historyData => addMapLine(historyData, historyData[0].events[0]));
 }
 
 
 $(document).ready(function() {
   function clearUI() {
-    $('#notification').stop(true, false).slideUp(200)
-    $('#load-spinner').stop(true, false).fadeOut(200)
+    $('#notification').stop(true, false).slideUp(200);
+    $('#load-spinner').stop(true, false).fadeOut(200);
   }
 
   if (localStorage['auratkartalla.userHasClosedInfo']) { $('#info').addClass('off') }
 
-  initializeGoogleMaps(populateMap, 8)
-
-  $('#time-filters li').on('click', function(e) {
-    e.preventDefault()
-    clearUI()
-
-    $('#time-filters li').removeClass('active')
-    $(e.currentTarget).addClass('active')
-    $('#visualization').removeClass('on')
-
-    populateMap($(e.currentTarget).data('hours'))
-  })
+  initializeGoogleMaps(populateMap);
 
   $('#info-close, #info-button').on('click', function(e) {
     e.preventDefault()
