@@ -31,16 +31,8 @@ class RouteServer(Flask):
             line.strip()
             line = [int(c) for c in line]
             print(line)
-            changing = False
             if line:
-                for c in line[1:]:
-                    if c != line[0]:
-                        changing = True
-                        break
-            if self.plow_state_was_changing and not changing:
                 self.plow_state = not self.plow_state
-                print('changed plow state to ', self.plow_state)
-            self.plow_state_was_changing = changing
         print('removing data')
         arduino_data = open('arduino/plow_data.log', 'w')
         arduino_data.write('')
