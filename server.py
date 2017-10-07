@@ -2,23 +2,29 @@
 from flask import Flask, jsonify
 import json
 import time
+import datetime
 
 # If live updating and more debug info:
 # >export FLASK_DEBUG=1
 #
 
+class RouteServer(Flask):
 
-app = Flask(__name__, static_folder='static', static_url_path='')
+    def __init__(self, datafile, start_index):
+        Flask.__init__(self, __name__, static_folder='static', static_url_path='')
+        datafile = open(datafile)
+        self.input_data = json.load(datafile)['location_history']
+        self.start_index = start_index
+        self.current_index = 1
 
-with open('data/94694.json') as json_text:
-    input_data = json.load(json_text)['location_history']
 
-start_index = 1000
-current_index = 1
+app = RouteServer('data/94694.json', 1000)
+
 
 @app.route("/")
 def index():
     return app.send_static_file('index.html')
+
 
 @app.route("/still")
 def still():
@@ -27,7 +33,7 @@ def still():
 
 @app.route("/api")
 def past_route(*args, **kwargs):
-    return jsonify({'location_history': input_data[:start_index]})
+    return jsonify({'location_history': app.input_data[:app.start_index]})
 
 
 @app.route("/api/help")
@@ -40,9 +46,8 @@ def api_root():
 
 @app.route("/api/current")
 def next_tick():
-    global current_index
-    data = input_data[current_index]
-    current_index += 1
+    data = app.input_data[app.current_index]
+    app.current_index += 1
     return jsonify(data)
 
 
