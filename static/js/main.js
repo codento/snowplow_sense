@@ -158,7 +158,7 @@ function addToExistingMapLine(plowData) {
     return;
   }
   const latLng = new google.maps.LatLng(plowData.coords[1], plowData.coords[0]);
-  const eventType = (plowData.plow_down == True) ? plowData.events[0] : 'ps';
+  const eventType = (plowData.plow_down) ? plowData.events[0] : 'ps';
   const plowTrailWeight = (eventType === 'ps') ? 1 : 4;
   const plowTrailColor = getPlowJobColor(eventType);
   myPolyline = activePolylines[activePolylines.length - 1]

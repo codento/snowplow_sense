@@ -38,6 +38,7 @@ class RouteServer(Flask):
         arduino_data = open('arduino/plow_data.log', 'w')
         arduino_data.write('')
         arduino_data.close()
+        print('plow is down: ', self.plow_state)
         return self.plow_state
 
 
