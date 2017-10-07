@@ -38,7 +38,7 @@ def api_root():
     return resp
 
 
-@app.route("/api/recent")
+@app.route("/api/current")
 def next_tick():
     global current_index
     data = input_data[current_index]

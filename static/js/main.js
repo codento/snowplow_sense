@@ -4,9 +4,8 @@ Currently this is all copied from Sampsa Kuronen's Snowplow map. See message at 
 We'll modify this to fetch data at <1s intervals. -Jukka
 */
 
-// const snowAPI = '/data/94694.json' // not real input data, this is just dummy.
 const snowAPI = 'api'
-const nextActionAPI = 'api/recent'
+const nextActionAPI = 'api/current'
 
 var activePolylines = []
 var activeMarkers = []
@@ -208,7 +207,6 @@ function startTimedCalls() {
 }
 
 function getActivePlows(callback) {
-  $('#load-spinner').fadeIn(400)
   $.getJSON(snowAPI)
     .done(function(json) {
       if (json.length !== 0) {
@@ -217,7 +215,6 @@ function getActivePlows(callback) {
       } else {
         displayNotification('Ei näytettävää valitulla ajalla')
       }
-      $('#load-spinner').fadeOut(800)
     })
     .fail(error=> console.error(`Failed to fetch active snowplows: ${JSON.stringify(error)}`))
 }
@@ -232,7 +229,6 @@ function populateMap(hours) {
 $(document).ready(function() {
   function clearUI() {
     $('#notification').stop(true, false).slideUp(200);
-    $('#load-spinner').stop(true, false).fadeOut(200);
   }
 
   if (localStorage['auratkartalla.userHasClosedInfo']) { $('#info').addClass('off') }
