@@ -33,6 +33,7 @@ class RouteServer(Flask):
             print(line)
             if line:
                 self.plow_state = not self.plow_state
+                print('plow state changed to ', self.plow_state)
         print('removing data')
         arduino_data = open('arduino/plow_data.log', 'w')
         arduino_data.write('')

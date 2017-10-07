@@ -154,6 +154,9 @@ function createNewPolyline(latLng, color, weight) {
 
 
 function addToExistingMapLine(plowData) {
+  if (!plowData.coords) {
+    return;
+  }
   const latLng = new google.maps.LatLng(plowData.coords[1], plowData.coords[0]);
   const eventType = (Math.random() > 0.2) ? plowData.events[0] : 'ps';
   const plowTrailWeight = (eventType === 'ps') ? 1 : 4;
