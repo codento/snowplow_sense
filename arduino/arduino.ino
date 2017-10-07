@@ -1,5 +1,5 @@
 const int sensorPin = A0; // Analog Pin 0
-
+volatile int r = 0;
 void setup()
 {
   Serial.begin(9600);        // Avataan keskustelu koneen kanssa 9600bps
@@ -9,11 +9,15 @@ void setup()
 void loop()
 {
   int sensorVal = analogRead(sensorPin);
-
+  r= r+1;
   if (sensorVal > 0){
-    Serial.println(0);
+    Serial.print(0);
   }else{
-    Serial.println(1);
+    Serial.print(1);
   }
-  delay(200); // Annetaan koneen ja ihmisen levähtää 0,200 sekunniksi
+  if(r == 8){
+    Serial.println();
+    r = 0;
+  }
+  delay(100); // Annetaan koneen ja ihmisen levähtää 0,200 sekunniksi
 }

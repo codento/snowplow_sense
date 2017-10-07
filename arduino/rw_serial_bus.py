@@ -5,7 +5,7 @@ import threading
 
 
 def monitor(plow_state):
-    text_file.write("\n")
+    
     ser = serial.Serial(COMPORT, BAUDRATE, timeout=1)
     state_change = 0
     changing = True
@@ -31,7 +31,7 @@ def monitor(plow_state):
         print(plow_state)
         first = 1
     if state_change > 0:
-        print(state_change)
+        text_file.write("\n")
         text_file.write(str(state_change))
     print("Stop Monitoring")
 
@@ -42,13 +42,13 @@ MAIN APPLICATION
 
 print("Start Serial Monitor")
 print()
-text_file = open("plow_data.log", "a")
-COMPORT = "/dev/ttyACM0"
+COMPORT = "/dev/ttyACM1"
 BAUDRATE = 9600
 plow_state = True
-for i in range(0, 100):
+for i in range(0, 1000):
+    text_file = open("plow_data.log", "a")
     monitor(plow_state)
     i += 1
+    text_file.close()
 
 
-text_file.close()

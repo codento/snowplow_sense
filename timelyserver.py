@@ -28,12 +28,13 @@ class RouteServer(Flask):
         lines = arduino_data.readlines()
         print('reading data.')
         for line in lines:
-            line.strip()
-            line = [int(c) for c in line]
+            line = line.strip()
+            #line = [int(c) for c in line]
             print(line)
             if line:
                 self.plow_state = not self.plow_state
                 print('plow state changed to ', self.plow_state)
+        print(lines)
         print('removing data')
         arduino_data = open('arduino/plow_data.log', 'w')
         arduino_data.write('')
