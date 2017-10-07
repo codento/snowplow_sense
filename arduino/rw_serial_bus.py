@@ -4,20 +4,35 @@ import serial
 import threading
 
 
-def monitor():
-
+def monitor(plow_state):
+    text_file.write("\n")
     ser = serial.Serial(COMPORT, BAUDRATE, timeout=1)
-
-    while (1):
+    state_change = 0
+    changing = True
+    first = 0
+    while (changing):
         line = ser.readline()
 
-        if (line != ""):
-            print(line.decode('utf-8'))
+        if (line != "" and first > 0):
+            check = list(line.decode('utf-8'))
+            del check[8:10]
+            print(check)
+            if all(ones == '1' for ones in check) or all(zeros == '0' for zeros in check):
+                changing = False
+                plow_state = plow_state
+            else:
+                if plow_state:
+                    plow_state = False
+                    state_change += 1
+                else:
+                    plow_state = True
+                    state_change += 1
 
-            text_file.write(line.decode('utf-8'))
-
-        # do some other things here
-
+        print(plow_state)
+        first = 1
+    if state_change > 0:
+        print(state_change)
+        text_file.write(str(state_change))
     print("Stop Monitoring")
 
 
@@ -30,7 +45,10 @@ print()
 text_file = open("plow_data.log", "a")
 COMPORT = "/dev/ttyACM0"
 BAUDRATE = 9600
+plow_state = True
+for i in range(0, 100):
+    monitor(plow_state)
+    i += 1
 
-monitor()
 
 text_file.close()
