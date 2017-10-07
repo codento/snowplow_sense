@@ -4,8 +4,7 @@ Currently this is all copied from Sampsa Kuronen's Snowplow map. See message at 
 We'll modify this to fetch data at <1s intervals. -Jukka
 */
 
-const snowAPI = '../../../data/94694.json'
-const fakeAPI = 'api/'
+const snowAPI = 'api'
 
 var activePolylines = []
 var map = null

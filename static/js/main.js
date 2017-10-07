@@ -65,7 +65,7 @@ function initializeGoogleMaps(callback, hours) {
     featureType: 'road.local',
     elementType: 'labels.text.fill',
     stylers: [
-      { visibility: 'on' },
+      { visibility: 'off' },
       { color: '#f98a2b' }
     ]
   }, {
@@ -126,8 +126,8 @@ function addMapLine(plowData, plowJobId) {
     path: polylinePath,
     geodesic: true,
     strokeColor: plowTrailColor,
-    strokeWeight: 2,
-    strokeOpacity: 0.6
+    strokeWeight: 3,
+    strokeOpacity: 0.8
   })
   activePolylines.push(polyline)
   polyline.setMap(map)
@@ -146,7 +146,7 @@ function createNewPolyline(latLng, color, weight) {
       path: [latLng],
       geodesic: true,
       strokeColor: color,
-      strokeWeight: weight,
+      strokeWeight: 3,
       strokeOpacity: 0.8
     });
     activePolylines.push(myPolyline);
