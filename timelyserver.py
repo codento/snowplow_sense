@@ -20,9 +20,32 @@ class RouteServer(Flask):
         self.current_index = 1
         self.time_diff = 0
         self.start_time = datetime.now()
+        self.plow_state = False
+        self.plow_state_was_changing = False
 
     def analyze_plow_state(self):
-        return random.random() < 0.8
+        arduino_data = open('arduino/plow_data.log', 'r')
+        lines = arduino_data.readlines()
+        print('reading data.')
+        for line in lines:
+            line.strip()
+            line = [int(c) for c in line]
+            print(line)
+            changing = False
+            if line:
+                for c in line[1:]:
+                    if c != line[0]:
+                        changing = True
+                        break
+            if self.plow_state_was_changing and not changing:
+                self.plow_state = not self.plow_state
+                print('changed plow state to ', self.plow_state)
+            self.plow_state_was_changing = changing
+        print('removing data')
+        arduino_data = open('arduino/plow_data.log', 'w')
+        arduino_data.write('')
+        arduino_data.close()
+        return self.plow_state
 
 
 app = RouteServer('data/94694.json', 1000)
