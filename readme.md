@@ -66,7 +66,7 @@ Open `localhost:8000 in browser. See also `localhost:8000/api`.
 
 ## MIT License`
 
-Copyright (c) 2017 Codento Oy
+Copyright for portions of project Snowplow sense are held by Sampsa Kuronen as part of project Helsinki snowplows visualised. All other copyright for project Snowplow sense are held by Codento Oy, 2017.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
